@@ -1,0 +1,16 @@
+[SddmGreeterTheme]
+Name=OFTC 1.0
+Description=One for The Code SDDM Theme version 1.0
+Author=Dennis de Houx
+Copyright=(c) 2022, One For The Code
+License=GPL 3+
+Type=sddm-theme
+Version=1.0
+Website=https://github.com/OneForTheCode
+Screenshot=preview.png
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=dennis@oftc.be
+Theme-Id=OFTC-1
+Theme-API=2.0
