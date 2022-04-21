@@ -67,12 +67,12 @@ common used tools and programs.
 ### Built With
 
 <p align="center">
-  <a href="https://debian.org"><img src="https://debian.org/Pics/debian-logo-1024x576.png" alt="Debian Logo" width="400"></a>
-  <a href="https://ploybar.github.io"><img src="https://polybar.github.io/assets/img/logo.svg" alt="Polybar Logo" width="400"></a>
+  <a href="https://debian.org"><img src="https://debian.org/Pics/debian-logo-1024x576.png" alt="Debian Logo" hieght="200"></a>
+  <a href="https://ploybar.github.io"><img src="https://polybar.github.io/assets/img/logo.svg" alt="Polybar Logo" height="200"></a>
 </p>
 <p align="center">
-  <a href="https://github.com/baskerville/bspwm"><img src="https://raw.githubusercontent.com/baskerville/bspwm/master/artwork/bspwm_logo.svg" alt="BSPWM Logo" width="400"></a>
-  <a href="https://github.com/sddm/sddm"><img src="https://camo.githubusercontent.com/40456acf31d80d701a5981e6a15b30dfe96b9953a0eef6a4936874fe09e5a84d/68747470733a2f2f7261772e6769746875622e636f6d2f7364646d2f7364646d2f6d61737465722f7372632f677265657465722f7468656d652f6d6175692e6a7067" alt="SDDM Logo" width="400"></a>
+  <a href="https://github.com/baskerville/bspwm"><img src="https://raw.githubusercontent.com/baskerville/bspwm/master/artworks/bspwm_logo.svg" alt="BSPWM Logo" height="200"></a>
+  <a href="https://github.com/sddm/sddm"><img src="https://camo.githubusercontent.com/40456acf31d80d701a5981e6a15b30dfe96b9953a0eef6a4936874fe09e5a84d/68747470733a2f2f7261772e6769746875622e636f6d2f7364646d2f7364646d2f6d61737465722f7372632f677265657465722f7468656d652f6d6175692e6a7067" alt="SDDM Logo" height="200"></a>
 </p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -105,7 +105,7 @@ A minimal installation of debian 11 or raspberry os 11.
 
 1. Download the setup.sh script
    ```sh
-   wget "https://github/setup.sh"
+   wget "https://raw.githubusercontent.com/OneForTheCode/Debian-Workstation/main/setup.sh"
    ```
 2. Make the script executable
    ```sh
