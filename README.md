@@ -96,6 +96,7 @@ A minimal installation of debian 11 or raspberry os 11.
 
 ***Required***
 * wget - "apt install wget"
+* sudo - "apt install sudo"
 
 ***Optional***
 * Any tools or service you like to use

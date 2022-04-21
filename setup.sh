@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ### UPDATE APT PACKAGES REPOSITORIES
-apt update -y
+sudo apt update -y
 
 ### INSTALL GIT SO WE CAN CLONE THE PROJECT
-apt install git -y
+sudo apt install git -y
 
 ### SETUP TEMP DIRECTORY
 cd
