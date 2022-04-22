@@ -10,7 +10,7 @@ sudo apt update -y
 sudo apt upgrade -y
 
 ### INSTALL BASE PACKAGES
-sudo apt install rsync file lsb-release fonts-powerline git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
+sudo apt install plymouth rsync file lsb-release fonts-powerline git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
 
 ### INSTALL CLI PACKAGES
 sudo apt install mc htop wget nano curl iftop iotop atop speedtest-cli neofetch -y
@@ -24,6 +24,6 @@ sudo apt install chromium -y
 ### INSTALL PRODUCTION PACKAGES
 sudo apt install flameshot codium filezilla -y
 
-### ENABLE SYSTEMCTL
-sudo systemctl enable sddm
+### SET GRAPHICAL INTERFACE FIRST
+sudo systemctl enable plymouth
 sudo systemctl set-default graphical.target

@@ -9,6 +9,9 @@ source env.sh
 ### RUN PACKAGE SCRIPT
 ./packages.sh
 
+### RUN SYSTEM CONFIG SCRIPT
+./sysconfig.sh
+
 ### RUN FONTS SCRIPT
 ./fonts.sh
 
