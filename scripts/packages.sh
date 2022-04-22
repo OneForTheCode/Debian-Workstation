@@ -10,13 +10,13 @@ sudo apt update -y
 sudo apt upgrade -y
 
 ### INSTALL BASE PACKAGES
-sudo apt install plymouth rsync screen sshfs nfs-common file lsb-release fonts-powerline git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
+sudo apt install plymouth rsync screen sshfs nfs-common smartmontools lm-sensors file lsb-release fonts-powerline procps git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
 
 ### INSTALL CLI PACKAGES
-sudo apt install iputils-ping traceroute mtr mc htop wget nano curl tcpdump nmon nfswatch nfstrace iftop iotop atop usbtop speedtest-cli neofetch -y
+sudo apt install iputils-ping traceroute mtr mc htop wget nano curl tcpdump nmon nfswatch nfstrace sysstat net-tools nmap iftop iotop atop usbtop bashtop glances speedtest-cli neofetch -y
 
 ### INSTALL TOOLS PACKAGES
-sudo apt install feh nitrogen thunar thunar-archive-plugin thunar-font-manager thunar-volman sakura gparted network-manager network-manager-l2tp network-manager-openvpn network-manager-pptp network-manager-ssh -y
+sudo apt install feh nitrogen thunar thunar-archive-plugin thunar-font-manager thunar-volman sakura gparted hardinfo ksysguard network-manager network-manager-l2tp network-manager-openvpn network-manager-pptp network-manager-ssh -y
 
 ### INSTALL WEB PACKAGES
 sudo apt install chromium -y
