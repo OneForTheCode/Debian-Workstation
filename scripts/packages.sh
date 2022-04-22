@@ -22,7 +22,7 @@ sudo apt install feh nitrogen thunar thunar-archive-plugin thunar-font-manager t
 sudo apt install chromium -y
 
 ### INSTALL PRODUCTION PACKAGES
-sudo apt install eog totem p7zip-full flameshot codium filezilla -y
+sudo apt install eog totem p7zip-full flameshot codium filezilla gimp inkscape qalculate -y
 
 ### SET GRAPHICAL INTERFACE FIRST
 sudo systemctl enable plymouth
