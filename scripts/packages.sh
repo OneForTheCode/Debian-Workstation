@@ -10,7 +10,7 @@ sudo apt update -y
 sudo apt upgrade -y
 
 ### INSTALL BASE PACKAGES
-sudo apt install plymouth rsync sshfs nfs-common file lsb-release fonts-powerline git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
+sudo apt install plymouth rsync screen sshfs nfs-common file lsb-release fonts-powerline git bspwm gzip unzip polybar rofi sxhkd picom breeze-cursor-theme sddm arandr lxappearance lxpolkit -y
 
 ### INSTALL CLI PACKAGES
 sudo apt install iputils-ping traceroute mtr mc htop wget nano curl tcpdump nmon nfswatch nfstrace iftop iotop atop usbtop speedtest-cli neofetch -y
