@@ -8,13 +8,13 @@
 
 # List of applications to run
 APPS=(
-    synergy
+    #synergy
     flameshot
     )
 
 # Some applications start child applications that need to be killed on reload
 KILL=(
-    synergys
+    #synergys
     )
 
 # First kill lingering apps
