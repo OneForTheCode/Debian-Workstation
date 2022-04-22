@@ -15,9 +15,9 @@ cd debian-temp-install-scripts
 git clone https://github.com/OneForTheCode/Debian-Workstation.git
 
 ### LAUCH MIGRATION SCRIPT
-cd Debian-Workstation
-chmod +x scripts/migration.sh
-./scripts/migration.sh
+cd Debian-Workstation/scripts
+chmod +x migration.sh
+./migration.sh
 
 ### REMOVE TEMP DIRECTORY
 cd
