@@ -57,15 +57,6 @@ if [[ ! -z "${PACKAGES}" ]]; then
 fi
 
 
-### SETUP DIALOG
-echo -n " * Setting up dialog, please wait..."
-if [[ ! -f "~/dialog.rc" ]]; then
-    wget -q "https://raw.githubusercontent.com/OneForTheCode/Debian-Workstation/main/scripts/dialog.rc" -O ~/.dialog.rc > /dev/null 2>&1
-    touch ~/DIALOGRC.clean > /dev/null 2>&1
-fi
-echo " Done."
-
-
 ### SETUP TEMP DIRECTORY
 echo -n " * Creating temporary directory for install scripts, please wait..."
 cd
@@ -82,6 +73,15 @@ git clone https://github.com/OneForTheCode/Debian-Workstation.git > /dev/null 2>
 echo " Done."
 
 
+### SETUP DIALOG
+echo -n " * Setting up dialog, please wait..."
+if [[ ! -f "~/dialog.rc" ]]; then
+    cp ~/debian/temp-install-scripts/Debian-Workstation/scripts/dialogrc ~/.dialogrc > /dev/null 2>&1
+    touch ~/DIALOGRC.clean > /dev/null 2>&1
+fi
+echo " Done."
+
+
 ### LAUCH MIGRATION SCRIPT
 echo -n " * Starting the migration scripts, please wait..."
 cd Debian-Workstation/scripts
@@ -95,7 +95,7 @@ echo -n " * Removing temporary install scripts and files, please wait..."
 cd
 rm -rf debian-temp-install-scripts
 if [[ -f "~/DIALOGRC.clean" ]]; then
-    rm -f ~/.dialog.rc > /dev/null 2>&1
+    rm -f ~/.dialogrc > /dev/null 2>&1
     rm -f ~/DIALOGRC.clean > /dev/null 2>&1
 echo " Done."
 
