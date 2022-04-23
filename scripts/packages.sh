@@ -21,6 +21,9 @@ sudo apt install feh nitrogen thunar thunar-archive-plugin thunar-font-manager t
 ### INSTALL WEB PACKAGES
 sudo apt install chromium -y
 
+### INSTALL ANTIVIRUS PACKAGES
+sudo apt install clamav clamav-base clamav-docs clamav-freshclam clamfs clamtk clamdscan clamav-unofficieal-sigs
+
 ### INSTALL PRODUCTION PACKAGES
 sudo apt install eog totem p7zip-full flameshot codium filezilla gimp inkscape qalculate okular okular-backend-odp okular-backend-odt remmina -y
 
