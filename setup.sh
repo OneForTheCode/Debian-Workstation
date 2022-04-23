@@ -76,7 +76,7 @@ echo " Done."
 ### SETUP DIALOG
 echo -n " * Setting up dialog, please wait..."
 if [[ ! -f "~/dialog.rc" ]]; then
-    cp ~/debian/temp-install-scripts/Debian-Workstation/scripts/dialogrc ~/.dialogrc > /dev/null 2>&1
+    cp ~/debian-temp-install-scripts/Debian-Workstation/scripts/dialogrc ~/.dialogrc > /dev/null 2>&1
     touch ~/DIALOGRC.clean > /dev/null 2>&1
 fi
 echo " Done."
