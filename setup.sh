@@ -69,7 +69,7 @@ echo " Done."
 
 ### CLONE THE PROJECT
 echo -n " * Downloading install scripts and files, please wait..."
-git clone https://github.com/OneForTheCode/Debian-Workstation.git
+git clone https://github.com/OneForTheCode/Debian-Workstation.git > /dev/null 2>&1
 echo " Done."
 
 
