@@ -46,15 +46,24 @@ declare -a REQUIRED_PKGS=(dialog git)
 PACKAGES=""
 for PKG in "${REQUIRED_PKGS[@]}"; do
     read Check <<< "$(which ${PKG} 2> /dev/null)"
-    if [ -z "${Check}" ]; then
+    if [[ -z "${Check}" ]]; then
         PACKAGES="${PACKAGES} ${PKG}"
     fi
 done
-if [ ! -z "${PACKAGES}" ]; then
+if [[ ! -z "${PACKAGES}" ]]; then
     echo -n " * Installing pre required packages, please wait..."
     sudo apt -y -qq install ${PACKAGES} > /dev/null 2>&1
     echo " Done."
 fi
+
+
+### SETUP DIALOG
+echo -n " * Setting up dialog, please wait..."
+if [[ ! -f "~/dialog.rc" ]]; then
+    wget -q "https://raw.githubusercontent.com/OneForTheCode/Debian-Workstation/main/scripts/dialog.rc" -O ~/.dialog.rc > /dev/null 2>&1
+    touch ~/DIALOGRC.clean > /dev/null 2>&1
+fi
+echo " Done."
 
 
 ### SETUP TEMP DIRECTORY
@@ -85,13 +94,16 @@ echo " Done."
 echo -n " * Removing temporary install scripts and files, please wait..."
 cd
 rm -rf debian-temp-install-scripts
+if [[ -f "~/DIALOGRC.clean" ]]; then
+    rm -f ~/.dialog.rc > /dev/null 2>&1
+    rm -f ~/DIALOGRC.clean > /dev/null 2>&1
 echo " Done."
 
 
 ### REBOOT IF MIGRATION FINISHED
-if [ -f "MIGRATION.reboot" ]; then
-    rm -f MIGRATION.reboot
-    rm -f $0
+if [[ -f "MIGRATION.reboot" ]]; then
+    rm -f MIGRATION.reboot > /dev/null 2>&1
+    rm -f $0 > /dev/null 2>&1
     sudo reboot
 else
     echo " !!! Migration failed !!!"
