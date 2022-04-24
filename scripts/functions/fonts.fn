@@ -1,0 +1,100 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+TMP_COUNT=0
+TMP_FONTS_PERCENTILE=0
+TMP_FONTS_STEPS=1
+
+
+### PACKAGES FUNCTIONS
+fonts_item_steps() {
+    let "TMP_FONTS_STEPS=100 / ( ${1} + 1 )"
+    if [[ "${TMP_FONTS_STEPS}" -eq "0" ]]; then
+        TMP_FONTS_STEPS=1
+    fi
+}
+
+fonts_item_percentile() {
+    let "TMP_FONTS_PERCENTILE=${TMP_COUNT} * ${TMP_FONTS_STEPS}"
+    if [[ "${TMP_FONTS_PERCENTILE}" -gt "100" ]]; then
+        TMP_FONTS_PERCENTILE=99
+    fi
+}
+
+fonts_extract() {
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    fonts_item_percentile
+    TMP_INSTALL_INFO="${FONTS_INSTALL_EXTRACT} ${1}"
+    FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    if [[ -f "~/.fonts/${1}" ]]; then
+        cd ~/.fonts
+        if [[ "$1" == *".zip"* ]]; then
+            unzip $1 > /dev/null 2>&1
+        elif [[ "$1" == *".tar.gz"* ]]; then
+            tar xfz $1 > /dev/null 2>&1
+        elif [[ "$1" == *".tar"* ]]; then
+            tar xf $1 > /dev/null 2>&1
+        elif [[ "$1" == *".gzip"* ]]; then
+            gunzip $1 > /dev/null 2>&1
+        else
+            echo "" > /dev/null 2>&1
+        fi
+    fi
+}
+
+fonts_copy() {
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    fonts_item_percentile
+    TMP_INSTALL_INFO="${FONTS_INSTALL_INFO} ${1}"
+    FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    if [[ ! -f "~/.fonts/${1}" ]]; then
+        cp ../fonts/${1} ~/.fonts/
+    fi
+}
+
+fonts_install() {
+    TMP_COUNT=0
+    fonts_item_steps "${FONTS_COUNT}"
+    for FONT in ../fonts/*; do
+        FONT=$(basename ${FONT})
+        fonts_copy "${FONT}"
+        let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+        fonts_extract "${FONT}"
+    done
+    FONTS_STATUS=-100
+}
+
+fonts_cache() {
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    fonts_item_percentile
+    TMP_INSTALL_INFO="${FONTS_INSTALL_CACHE}"
+    FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    fc-cache -f > /dev/null 2>&1
+}
+
+fonts_run() {
+    fonts_install
+    fonts_cache
+}
