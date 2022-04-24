@@ -1,0 +1,36 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+
+
+### DOTCONFIG FUNCTIONS
+dotconfig_copy() {
+    DOTCONFIG_INSTALL_STATUS=7
+    dialog_installer "${DOTCONFIG_INSTALL_INFO}"
+    cp -r ../configs/user/* ${HOME_DIR}
+    DOTCONFIG_INSTALL_STATUS=-100
+    dialog_installer "${DOTCONFIG_INSTALL_INFO}"
+}
+
+dotconfig_run() {
+    dotconfig_copy
+}
