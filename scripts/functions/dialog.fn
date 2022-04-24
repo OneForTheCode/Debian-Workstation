@@ -1,0 +1,141 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+: ${DIALOG=dialog}
+BACKTITLE="${BACKGROUND_TITLE} ${VERSION}"
+# STATUS 7=Busy, 4=Checked, 3=Completed
+REPO_INSTALL_STATUS=-0
+REPO_UPDATE_STATUS=-0
+SYSTEM_UPGRADE_STATUS=-0
+PKGS_BASE_STATUS=-0
+PKGS_CLI_STATUS=-0
+PKGS_TOOLS_STATUS=-0
+PKGS_WEB_STATUS=-0
+PKGS_AV_STATUS=-0
+PKGS_PROD_STATUS=-0
+SYSCONFIG_STATUS=-0
+FONTS_STATUS=-0
+DIRECTORIES_STATUS=-0
+DOTCONFIG_STATUS=-0
+TOTAL_PERCENTILE=0
+
+### COUNT PACKAGES AND PERCENTILE STEPS
+REPOS_COUNT=$(ls ../configs/system/repos/*.list | wc -l)
+PKGS_BASE_COUNT=${#PKGS_BASE[@]}
+PKGS_CLI_COUNT=${#PKGS_CLI[@]}
+PKGS_TOOLS_COUNT=${#PKGS_TOOLS[@]}
+PKGS_WEB_COUNT=${#PKGS_WEB[@]}
+PKGS_AV_COUNT=${#PKGS_AV[@]}
+PKGS_PROD_COUNT=${#PKGS_PROD[@]}
+#FONTS_COUNT=$(ls ${TEMP_DIR}/fonts/*.zip | wc -l)
+FONTS_COUNT=$(ls ../fonts/*.zip | wc -l)
+let "FONTS_COUNT=${FONTS_COUNT} * 2"
+DIRS_COUNT=${#USER_HOME_DIRECTORIES[@]}
+let "STEPS_TOTAL=${REPOS_COUNT} + ${PKGS_BASE_COUNT} + ${PKGS_CLI_COUNT} + ${PKGS_TOOLS_COUNT} + ${PKGS_WEB_COUNT} + ${PKGS_AV_COUNT} + ${PKGS_PROD_COUNT} + ${FONTS_COUNT} + ${DIRS_COUNT}"
+let "STEPS_SINGLE=100 / ${STEPS_TOTAL}"
+if [[ "${STEPS_SINGLE}" -eq "0" ]]; then
+    STEPS_SINGLE=1
+fi
+
+
+### DIALOG FUNCTIONS
+dialog_item_steps() {
+    let "STEPS_ITEM=100 / $1"
+    if [[ "${STEPS_ITEM}" -eq "0" ]]; then
+        STEPS_ITEM=1
+    fi
+    echo ${STEPS_ITEM}
+}
+
+dialog_check_percentile() {
+    if [[ "$2" -gt "100" ]]; then
+        echo "$1"
+    else
+        echo "$2"
+    fi
+}
+
+dialog_check_value() {
+    if [[ -z "$2" ]]; then
+        echo $1
+    else
+        echo $2
+    fi
+}
+
+dialog_check_button() {
+    case $1 in
+        1) exit 1;;
+        255) exit 1;;
+    esac
+}
+
+dialog_title() {
+    if [[ -z "$1" ]]; then
+        echo "${DEFAULT_TITLE} ${VERSION}"
+    else
+        echo "${DEFAULT_TITLE} ${VERSION} - $1"
+    fi
+}
+
+dialog_welcome() {
+    TMP_TITLE=$(dialog_title ${WELCOME_TITLE})
+    $DIALOG --backtitle "${BACKTITLE}" \
+            --no-lines \
+            --no-label ${EXIT_LABEL} \
+            --yes-label ${OK_LABEL} \
+            --hline "${COPYRIGHT}" \
+            --title "${TMP_TITLE}" \
+            --yesno "\\n${WELCOME_MSG}" 18 60
+    dialog_check_button $?
+}
+
+dialog_installer() {
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} + ${STEPS_SINGLE}"
+    TMP_TITLE=$(dialog_title ${INSTALL_TITLE})
+    TMP_TOTAL_PERCENTILE=$(dialog_check_value 0 ${TOTAL_PERCENTILE})
+    TMP_TOTAL_PERCENTILE=$(dialog_check_percentile 99 ${TOTAL_PERCENTILE})
+    $DIALOG --backtitle "${BACKTITLE}" \
+            --no-lines \
+            --cancel-label ${CANCEL_LABEL} \
+            --exit-label ${EXIT_LABEL} \
+            --no-label ${NO_LABEL} \
+            --yes-label ${YES_LABEL} \
+            --ok-label ${OK_LABEL} \
+            --hline "${COPYRIGHT}" \
+            --title "${TMP_TITLE}" \
+            --mixedgauge "${1}..." \
+                0 0 ${TMP_TOTAL_PERCENTILE} \
+                "${REPO_INSTALL_ITEM}" "${REPO_INSTALL_STATUS}" \
+                "${REPO_UPDATE_ITEM}" "${REPO_UPDATE_STATUS}" \
+                "${SYSTEM_UPGRADE_ITEM}" "${SYSTEM_UPGRADE_STATUS}" \
+                "${PKGS_BASE_ITEM}" "${PKGS_BASE_STATUS}" \
+                "${PKGS_CLI_ITEM}" "${PKGS_CLI_STATUS}" \
+                "${PKGS_TOOLS_ITEM}" "${PKGS_TOOLS_STATUS}" \
+                "${PKGS_WEB_ITEM}" "${PKGS_WEB_STATUS}" \
+                "${PKGS_AV_ITEM}" "${PKGS_AV_STATUS}" \
+                "${PKGS_PROD_ITEM}" "${PKGS_PROD_STATUS}" \
+                "${SYSCONFIG_ITEM}" "${SYSCONFIG_STATUS}" \
+                "${FONTS_ITEM}" "${FONTS_STATUS}" \
+                "${DIRECTORIES_ITEM}" "${DIRECTORIES_STATUS}" \
+                "${DOTCONFIG_ITEM}" "${DOTCONFIG_STATUS}"
+}
