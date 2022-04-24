@@ -75,9 +75,9 @@ echo " Done."
 
 ### SETUP DIALOG
 echo -n " * Setting up dialog, please wait..."
-if [[ ! -f "~/dialog.rc" ]]; then
-    cp ~/debian-temp-install-scripts/Debian-Workstation/scripts/dialogrc ~/.dialogrc > /dev/null 2>&1
-    touch ~/DIALOGRC.clean > /dev/null 2>&1
+if [[ ! -f "${HOME}/.dialogrc" ]]; then
+    cp ${HOME}/debian-temp-install-scripts/Debian-Workstation/scripts/dialogrc ${HOME}/.dialogrc > /dev/null 2>&1
+    touch ${HOME}/DIALOGRC.clean > /dev/null 2>&1
 fi
 echo " Done."
 
@@ -94,15 +94,15 @@ echo " Done."
 echo -n " * Removing temporary install scripts and files, please wait..."
 cd
 rm -rf debian-temp-install-scripts
-if [[ -f "~/DIALOGRC.clean" ]]; then
-    rm -f ~/.dialogrc > /dev/null 2>&1
-    rm -f ~/DIALOGRC.clean > /dev/null 2>&1
+if [[ -f "${HOME}/DIALOGRC.clean" ]]; then
+    rm -f ${HOME}/.dialogrc > /dev/null 2>&1
+    rm -f ${HOME}/DIALOGRC.clean > /dev/null 2>&1
 echo " Done."
 
 
 ### REBOOT IF MIGRATION FINISHED
-if [[ -f "~/MIGRATION.reboot" ]]; then
-    rm -f ~/MIGRATION.reboot > /dev/null 2>&1
+if [[ -f "${HOME}/MIGRATION.reboot" ]]; then
+    rm -f ${HOME}/MIGRATION.reboot > /dev/null 2>&1
     rm -f $0 > /dev/null 2>&1
     sudo reboot
 else
