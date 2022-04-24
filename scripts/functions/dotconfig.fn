@@ -26,7 +26,7 @@
 dotconfig_copy() {
     DOTCONFIG_STATUS=7
     dialog_installer "${DOTCONFIG_INSTALL_INFO}"
-    cp -r ../configs/user/* ${HOME_DIR}
+    cp -r ../configs/user/* ${HOME_DIR}/
     DOTCONFIG_STATUS=-100
     dialog_installer "${DOTCONFIG_INSTALL_INFO}"
 }

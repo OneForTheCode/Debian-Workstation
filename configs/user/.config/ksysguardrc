@@ -1,0 +1,17 @@
+[MainWindow]
+CommandList=
+HDMI-1 Height 1050=987
+HDMI-1 Width 1400=708
+HDMI-1 XPosition=681
+HDMI-1 YPosition=52
+HDMI-1 default Height 1050=987
+HDMI-1 default Width 1400=1378
+HDMI-1 default XPosition=11
+HDMI-1 default YPosition=52
+HostList=
+SelectedSheets[$e]=ProcessTable.sgrd,SystemLoad2.sgrd
+SplitterSizeList=10,90
+State=AAAA/wAAAAD9AAAAAAAABWIAAAOxAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgAAAAAA/////wAAAAAAAAAA
+ToolBarsMovable=Disabled
+currentSheet=1
+isMinimized=false
