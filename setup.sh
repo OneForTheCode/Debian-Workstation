@@ -101,8 +101,8 @@ echo " Done."
 
 
 ### REBOOT IF MIGRATION FINISHED
-if [[ -f "MIGRATION.reboot" ]]; then
-    rm -f MIGRATION.reboot > /dev/null 2>&1
+if [[ -f "~/MIGRATION.reboot" ]]; then
+    rm -f ~/MIGRATION.reboot > /dev/null 2>&1
     rm -f $0 > /dev/null 2>&1
     sudo reboot
 else
