@@ -54,6 +54,7 @@ sysconfig_systemctl() {
         dialog_installer "${TMP_INSTALL_INFO}"
         sysconfig_systemctl_enable ${SERVICE}
     done
+    SYSCONFIG_STATUS=-100
 }
 
 sysconfig_rsync_config() {

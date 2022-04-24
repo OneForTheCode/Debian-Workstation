@@ -24,10 +24,10 @@
 
 ### DOTCONFIG FUNCTIONS
 dotconfig_copy() {
-    DOTCONFIG_INSTALL_STATUS=7
+    DOTCONFIG_STATUS=7
     dialog_installer "${DOTCONFIG_INSTALL_INFO}"
     cp -r ../configs/user/* ${HOME_DIR}
-    DOTCONFIG_INSTALL_STATUS=-100
+    DOTCONFIG_STATUS=-100
     dialog_installer "${DOTCONFIG_INSTALL_INFO}"
 }
 

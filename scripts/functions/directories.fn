@@ -52,6 +52,7 @@ dirs_create() {
             mkdir -p ${HOME_DIR}/${DIR} > /dev/null 2>&1
         fi
     done
+    DIRECTORIES_STATUS=-100
 }
 
 directories_run() {
