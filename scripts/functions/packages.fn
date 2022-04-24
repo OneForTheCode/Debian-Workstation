@@ -28,10 +28,7 @@ TMP_PKGS_INSTALLED=""
 
 ### PACKAGES FUNCTIONS
 pkgs_list_installed() {
-    #TMP_PKGS_INSTALLED=$(apt list --installed > /dev/null 2>&1)
-    TMP_PKGS_INSTALLED=$(apt list --installed)
-#    echo "LIST: ${TMP_PKGS_INSTALLED}"
-#    exit 1
+    TMP_PKGS_INSTALLED=$(apt -qq list --installed)
 }
 
 pkgs_item_steps() {
@@ -49,14 +46,8 @@ pkgs_item_percentile() {
 }
 
 pkgs_apt() {
-#    echo "PKGS: ${1}"
-#    echo "LIST: ${TMP_PKGS_INSTALLED}"
     if [[ "${TMP_PKGS_INSTALLED}" != *"$1"* ]]; then
         sudo apt -qq -y install $1 > /dev/null 2>&1
-#        sleep 10
-#        clear
-#        echo "DETECTED: ${1}"
-#        exit 1
     fi
 }
 
@@ -141,8 +132,8 @@ pkgs_web() {
 
 pkgs_av() {
     TMP_COUNT=0
-    RASPI_DETECT=$(uname -a)
-    if [[ "${RASPI_DETECT}" == *"raspberrypi"* ]]; then
+    RASPI_DETECT=$(cat /etc/os-release | grep "PRETTY_NAME")
+    if [[ "${RASPI_DETECT}" == *"raspberrypi"* ]] || [[ "${RASPI_DETECT}" == *"Raspbian"* ]] || [[ "${RASPI_DETECT}" == *"Raspberry OS"* ]]; then
         let "TMP_COUNT=${TMP_COUNT} + ${#PKGS_AV[@]}"
         pkgs_item_percentile
         TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} (${PACKAGES_RASPBERRY_DETECTED})"
