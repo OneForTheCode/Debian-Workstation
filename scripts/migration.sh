@@ -30,6 +30,25 @@ while read configLine; do
         fi
     fi
 done < migration.conf
+
+### LOAD LOCALE FILE
+LANGUAGE=$(echo $LANG | tr "_" " " | awk {'print $1}')
+if [[ -f "language/${LANGUAGE}.conf" ]]; then
+    LANGUAGE_FILE="language/${LANGUAGE}.conf"
+else 
+    LANGUAGE_FILE="language/en.conf"
+fi
+while read configLine; do
+    if [[ "${configLine}" != *"#"* ]] && [[ ! -z "${configLine}" ]]; then
+        if [[ "${configLine}" == *"=("* ]]; then
+            declare -a "${configLine}"
+        else
+            declare "${configLine}"
+        fi
+    fi
+done < ${LANGUAGE_FILE}
+
+### LOAD DEFAULT DIRECTORY VARIABLES
 HOME_DIR="${HOME}"
 TEMP_DIR="${HOME}/debian-temp-install-scripts/Debian-Workstion"
 
