@@ -46,10 +46,11 @@ fonts_extract() {
     TMP_INSTALL_INFO="${FONTS_INSTALL_EXTRACT} ${1}"
     FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
     dialog_installer "${TMP_INSTALL_INFO}"
-    if [[ -f "~/.fonts/${1}" ]]; then
+    if [[ -f "${HOME_DIR}/.fonts/${1}" ]]; then
+	TMP_CUR_DIR=$(pwd)
         cd ~/.fonts
         if [[ "$1" == *".zip"* ]]; then
-            unzip $1 > /dev/null 2>&1
+            unzip -n -q $1 > /dev/null 2>&1
         elif [[ "$1" == *".tar.gz"* ]]; then
             tar xfz $1 > /dev/null 2>&1
         elif [[ "$1" == *".tar"* ]]; then
@@ -59,6 +60,7 @@ fonts_extract() {
         else
             echo "" > /dev/null 2>&1
         fi
+	cd ${TMP_CUR_DIR}
     fi
 }
 
@@ -68,8 +70,8 @@ fonts_copy() {
     TMP_INSTALL_INFO="${FONTS_INSTALL_INFO} ${1}"
     FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
     dialog_installer "${TMP_INSTALL_INFO}"
-    if [[ ! -f "~/.fonts/${1}" ]]; then
-        cp ../fonts/${1} ~/.fonts/
+    if [[ ! -f "${HOME_DIR}/.fonts/$1" ]]; then
+        cp ../fonts/${1} ~/.fonts/${1}
     fi
 }
 
