@@ -1,0 +1,59 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+TMP_COUNT=0
+TMP_DIRECTORIES_PERCENTILE=0
+TMP_DIRECTORIES_STEPS=1
+
+
+### DIRECTORY FUNCTIONS
+dirs_item_steps() {
+    let "$TMP_DIRECTORIES_STEPS=100 / ( ${1} + 1 )"
+    if [[ "${TMP_DIRECTORIES_STEPS"} -eq "0" ]]; then
+        TMP_DIRECTORIES_STEPS=1
+    fi
+}
+
+dirs_item_percentile() {
+    let "TMP_DIRECTORIES_PERCENTILE=${TMP_COUNT} * ${TMP_DIRECTORIES_STEPS}"
+    if [[ "${TMP_DIRECTORIES_PERCENTILE}" -gt "100" ]]; then
+        TMP_DIRECTORIES_PERCENTILE=99
+    fi
+}
+
+dirs_create() {
+    TMP_COUNT=0
+    dirs_item_steps "${#USER_HOME_DIRECTORIES[@]}"
+    for DIR in "${USER_HOME_DIRECTORIES[@]}"; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        dirs_item_percentile
+        TMP_INSTALL_INFO="${HOMEDIR_INSTALL_INFO} (${DIR})"
+        dialog_installer "${TMP_INSTALL_INFO}"
+        if [[ ! -d "${HOME_DIR}/${DIR}" ]]; then
+            mkdir -p ${HOME_DIR}/${DIR} > /dev/null 2>&1
+        fi
+    done
+}
+
+directories_run() {
+    dirs_create
+}
