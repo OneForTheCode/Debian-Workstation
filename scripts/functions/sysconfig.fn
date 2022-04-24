@@ -1,0 +1,116 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+TMP_COUNT=0
+TMP_SYSCONFIG_PERCENTILE=0
+TMP_SYSCONFIG_STEPS=1
+
+
+### PACKAGES FUNCTIONS
+sysconfig_item_steps() {
+    let "TMP_SYSCONFIG_STEPS=100 / ${1}"
+    if [[ "${TMP_SYSCONFIG_STEPS}" -eq "0" ]]; then
+        TMP_SYSCONFIG_STEPS=1
+    fi
+}
+
+sysconfig_item_percentile() {
+    let "TMP_SYSCONFIG_PERCENTILE=${TMP_COUNT} * ${TMP_SYSCONFIG_STEPS}"
+    if [[ "${TMP_SYSCONFIG_PERCENTILE}" -gt "100" ]]; then
+        TMP_SYSCONFIG_PERCENTILE=99
+    fi
+}
+
+sysconfig_systemctl_enable() {
+    sudo systemctl enable $1 > /dev/null 2>&1
+}
+
+sysconfig_systemctl() {
+    for SERVICE in ${SYSTEMCTL_SERVICES[@]}; do
+        let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        sysconfig_item_percentile
+        TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (Service: ${SERVICE})"
+        SYSCONFIG_STATUS=-${TMP_SYSCONFIG_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        sysconfig_systemctl_enable ${SERVICE}
+    done
+}
+
+sysconfig_rsync_config() {
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    pkgs_item_percentile
+    TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (RSYNC: Config)"
+    SYSCONFIG_STATUS=-${TMP_SYSCONFIG_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    sudo cp ../configs/system/rsyncd.conf /etc/rsyncd.conf > /dev/null 2>&1
+    sudo chown root.root /etc/rsyncd.conf > /dev/null 2>&1
+    sudo chmod 644 /etc/rsyncd.conf > /dev/null 2>&1
+}
+
+sysconfig_sddm_config() {
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    pkgs_item_percentile
+    TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Config)"
+    SYSCONFIG_STATUS=-${TMP_SYSCONFIG_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    sudo cp ../configs/system/sddm.conf /etc/sddm.conf > /dev/null 2>&1
+    sudo chown root.root /etc/sddm.conf > /dev/null 2>&1
+    sudo chmod 644 /etc/sddm.conf > /dev/null 2>&1
+}
+
+sysconfig_sddm_faces() {
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    pkgs_item_percentile
+    TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Faces)"
+    SYSCONFIG_STATUS=-${TMP_SYSCONFIG_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    sudo cp ../configs/system/sddm/faces/* /usr/share/sddm/faces/ > /dev/null 2>&1
+    sudo chown root.root /usr/share/sddm/faces/*.icon > /dev/null 2>&1
+    sudo chmod 644 /usr/share/sddm/faces/*.icon > /dev/null 2>&1
+}
+
+sysconfig_sddm_themes() {
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    let "TMP_COUNT=${TMP_COUNT} + 1"
+    pkgs_item_percentile
+    TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Themes)"
+    SYSCONFIG_STATUS=-${TMP_SYSCONFIG_PERCENTILE}
+    dialog_installer "${TMP_INSTALL_INFO}"
+    sudo cp ../themes/sddm /usr/share/sddm/themes/ > /dev/null 2>&1
+    sudo chown -R root.root /usr/share/sddm/themes/* > /dev/null 2>&1
+    #sudo chmod -R 644 /usr/share/sddm/themes/* > /dev/null 2>&1
+}
+
+sysconfig_run() {
+    let "TMP_COUNT_STEPS=${#SYSTEMCTL_SERVICES[@]} + 4"
+    TMP_COUNT=0
+    sysconfig_item_steps "${TMP_COUNT_STEPS}"
+    sysconfig_rsync_config
+    sysconfig_sddm_config
+    sysconfig_sddm_faces
+    sysconfig_sddm_themes
+    sysconfig_systemctl
+}
