@@ -1,0 +1,62 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+
+
+### PACKAGES FUNCTIONS
+repo_install() {
+    REPO_INSTALL_STATUS=7
+    dialog_installer "${REPO_INSTALL_INFO}..."
+    for FILE in ../configs/system/repos/*.list; do
+        FILE=$(basename ${FILE})
+        REPO_INSTALL_STATUS=4
+        let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+        dialog_installer "${REPO_INSTALL_INFO} (${FILE})"
+        let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+        if [[ ! -f "/etc/apt/sources.list.d/${FILE}" ]]; then
+            REPO_INSTALL_STATUS=7
+            dialog_installer "${REPO_INSTALL_INFO} (${FILE})"
+            sudo cp ../configs/system/repos/${FILE} /etc/apt/sources.list.d/${FILE}
+            sudo chown root.root /etc/apt/sources.list.d/${FILE}
+            sudo chmod 644 /etc/apt/sources.list.d/${FILE}
+            if [[ -f "../configs/system/repos/${FILE}.key.sh" ]]; then
+                bash ../configs/system/repos/${FILE}.key.sh > /dev/null 2>&1
+            fi
+        else
+            REPO_INSTALL_STATUS=6
+            dialog_installer "${REPO_INSTALL_INFO} (${FILE})"
+        fi
+    done
+    REPO_INSTALL_STATUS=-100
+}
+
+repo_update() {
+    REPO_UPDATE_STATUS=7
+    dialog_installer "${REPO_UPDATE_INFO}"
+    sudo apt -qq -y update > /dev/null 2>&1
+    REPO_UPDATE_STATUS=-100
+}
+
+repositories_run() {
+    repo_install
+    repo_update
+}
