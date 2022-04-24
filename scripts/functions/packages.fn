@@ -52,19 +52,19 @@ pkgs_apt() {
 }
 
 pkgs_autoremove() {
-    SYSTEM_UPGRADE_STATUS=7
+    PKGS_CLEANUP_STATUS=7
     let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
-    dialog_installer "${SYSTEM_AUTOREMOVE_INFO}"
+    dialog_installer "${PACKAGES_AUTOREMOVE_INFO}"
     sudo apt -qq -y autoremove > /dev/null 2>&1
-    SYSTEM_UPGRADE_STATUS=-100
+    PKGS_CLEANUP_STATUS=-100
 }
 
 pkgs_autopurge() {
-    SYSTEM_UPGRADE_STATUS=7
+    PKGS_CLEANUP_STATUS=7
     let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
-    dialog_installer "${SYSTEM_AUTOPURGE_INFO}"
+    dialog_installer "${PACKAGES_AUTOPURGE_INFO}"
     sudo apt -qq -y autopurge > /dev/null 2>&1
-    SYSTEM_UPGRADE_STATUS=-100
+    PKGS_CLEANUP_STATUS=-100
 }
 
 pkgs_upgrade() {

@@ -58,7 +58,7 @@ sysconfig_systemctl() {
 }
 
 sysconfig_rsync_config() {
-    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    #let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
     let "TMP_COUNT=${TMP_COUNT} + 1"
     pkgs_item_percentile
     TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (RSYNC: Config)"
@@ -70,7 +70,7 @@ sysconfig_rsync_config() {
 }
 
 sysconfig_sddm_config() {
-    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    #let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
     let "TMP_COUNT=${TMP_COUNT} + 1"
     pkgs_item_percentile
     TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Config)"
@@ -82,7 +82,7 @@ sysconfig_sddm_config() {
 }
 
 sysconfig_sddm_faces() {
-    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    #let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
     let "TMP_COUNT=${TMP_COUNT} + 1"
     pkgs_item_percentile
     TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Faces)"
@@ -94,7 +94,7 @@ sysconfig_sddm_faces() {
 }
 
 sysconfig_sddm_themes() {
-    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    #let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
     let "TMP_COUNT=${TMP_COUNT} + 1"
     pkgs_item_percentile
     TMP_INSTALL_INFO="${SYSCONFIG_INSTALL_INFO} (SDDM: Themes)"

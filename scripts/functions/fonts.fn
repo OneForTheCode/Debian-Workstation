@@ -84,7 +84,6 @@ fonts_install() {
         let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
         fonts_extract "${FONT}"
     done
-    FONTS_STATUS=-100
 }
 
 fonts_cache() {
@@ -94,6 +93,7 @@ fonts_cache() {
     FONTS_STATUS=-${TMP_FONTS_PERCENTILE}
     dialog_installer "${TMP_INSTALL_INFO}"
     fc-cache -f > /dev/null 2>&1
+    FONTS_STATUS=-100
 }
 
 fonts_run() {
