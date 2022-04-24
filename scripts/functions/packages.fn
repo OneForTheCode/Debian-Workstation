@@ -1,0 +1,190 @@
+
+###############################################################################
+###                                                                         ###
+### One For The Code - Debian Workstion Migration Tool                      ###
+### ==================================================                      ###
+###                                                                         ###
+### Install script to setup debian minimal install to a debian workstation  ###
+### with bspwm (window manager) and lots of base packages and production    ###
+### tools.                                                                  ###
+###                                                                         ###
+###                                                                         ###
+### Version  : 1.0.0                                                        ###
+### Author   : Dennis de houx <dennis@aio.be>                               ###
+### Copyright: 2022 (c) One For The Code                                    ###
+###            2022 (c) All In One                                          ###
+### Links    : https://github.com/OneForTheCode/Debian-Workstation          ###
+###                                                                         ###
+###############################################################################
+
+
+
+### LOCAL VARIABLES
+TMP_COUNT=0
+TMP_PKGS_PERCENTILE=0
+TMP_PKGS_STEPS=1
+TMP_PKGS_INSTALLED=""
+
+
+### PACKAGES FUNCTIONS
+pkgs_list_installed() {
+    #TMP_PKGS_INSTALLED=$(apt list --installed > /dev/null 2>&1)
+    TMP_PKGS_INSTALLED=$(apt list --installed)
+#    echo "LIST: ${TMP_PKGS_INSTALLED}"
+#    exit 1
+}
+
+pkgs_item_steps() {
+    let "TMP_PKGS_STEPS=100 / ${1}"
+    if [[ "${TMP_PKGS_STEPS}" -eq "0" ]]; then
+        TMP_PKGS_STEPS=1
+    fi
+}
+
+pkgs_item_percentile() {
+    let "TMP_PKGS_PERCENTILE=${TMP_COUNT} * ${TMP_PKGS_STEPS}"
+    if [[ "${TMP_PKGS_PERCENTILE}" -gt "100" ]]; then
+        TMP_PKGS_PERCENTILE=99
+    fi
+}
+
+pkgs_apt() {
+#    echo "PKGS: ${1}"
+#    echo "LIST: ${TMP_PKGS_INSTALLED}"
+    if [[ "${TMP_PKGS_INSTALLED}" != *"$1"* ]]; then
+        sudo apt -qq -y install $1 > /dev/null 2>&1
+#        sleep 10
+#        clear
+#        echo "DETECTED: ${1}"
+#        exit 1
+    fi
+}
+
+pkgs_autoremove() {
+    SYSTEM_UPGRADE_STATUS=7
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    dialog_installer "${SYSTEM_AUTOREMOVE_INFO}"
+    sudo apt -qq -y autoremove > /dev/null 2>&1
+    SYSTEM_UPGRADE_STATUS=-100
+}
+
+pkgs_autopurge() {
+    SYSTEM_UPGRADE_STATUS=7
+    let "TOTAL_PERCENTILE=${TOTAL_PERCENTILE} - ${STEPS_SINGLE}"
+    dialog_installer "${SYSTEM_AUTOPURGE_INFO}"
+    sudo apt -qq -y autopurge > /dev/null 2>&1
+    SYSTEM_UPGRADE_STATUS=-100
+}
+
+pkgs_upgrade() {
+    SYSTEM_UPGRADE_STATUS=7
+    dialog_installer "${SYSTEM_UPGRADE_INFO}"
+    sudo apt -qq -y upgrade > /dev/null 2>&1
+    SYSTEM_UPGRADE_STATUS=-100
+}
+
+pkgs_base() {
+    TMP_COUNT=0
+    pkgs_item_steps "${#PKGS_BASE[@]}"
+    for PKG in ${PKGS_BASE[@]}; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+        PKGS_BASE_STATUS=-${TMP_PKGS_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        pkgs_apt "${PKG}"
+    done
+    PKGS_BASE_STATUS=-100
+}
+
+pkgs_cli() {
+    TMP_COUNT=0
+    pkgs_item_steps "${#PKGS_CLI[@]})"
+    for PKG in ${PKGS_CLI[@]}; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+        PKGS_CLI_STATUS=-${TMP_PKGS_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        pkgs_apt "${PKG}"
+    done
+    PKGS_CLI_STATUS=-100
+}
+
+pkgs_tools() {
+    TMP_COUNT=0
+    pkgs_item_steps "${#PKGS_TOOLS[@]})"
+    for PKG in ${PKGS_TOOLS[@]}; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+        PKGS_TOOLS_STATUS=-${TMP_PKGS_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        pkgs_apt "${PKG}"
+    done
+    PKGS_TOOLS_STATUS=-100
+}
+
+pkgs_web() {
+    TMP_COUNT=0
+    pkgs_item_steps "${#PKGS_WEB[@]}"
+    for PKG in ${PKGS_WEB[@]}; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+        PKGS_WEB_STATUS=-${TMP_PKGS_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        pkgs_apt "${PKG}"
+    done
+    PKGS_WEB_STATUS=-100
+}
+
+pkgs_av() {
+    TMP_COUNT=0
+    RASPI_DETECT=$(uname -a)
+    if [[ "${RASPI_DETECT}" == *"raspberrypi"* ]]; then
+        let "TMP_COUNT=${TMP_COUNT} + ${#PKGS_AV[@]}"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} (${PACKAGES_RASPBERRY_DETECTED})"
+        PKGS_AV_STATUS=6
+        dialog_installer "${TMP_INSTALL_INFO}"
+    else
+        pkgs_item_steps "${#PKGS_AV[@]}"
+        for PKG in ${PKGS_AV[@]}; do
+            let "TMP_COUNT=${TMP_COUNT} + 1"
+            pkgs_item_percentile
+            TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+            PKGS_AV_STATUS=-${TMP_PKGS_PERCENTILE}
+            dialog_installer "${TMP_INSTALL_INFO}"
+            pkgs_apt "${PKG}"
+        done
+        PKGS_AV_STATUS=-100
+    fi
+}
+
+pkgs_prod() {
+    TMP_COUNT=0
+    pkgs_item_steps "${#PKGS_PROD[@]}"
+    for PKG in ${PKGS_PROD[@]}; do
+        let "TMP_COUNT=${TMP_COUNT} + 1"
+        pkgs_item_percentile
+        TMP_INSTALL_INFO="${PACKAGES_INSTALL_INFO} ${PKG}"
+        PKGS_PROD_STATUS=-${TMP_PKGS_PERCENTILE}
+        dialog_installer "${TMP_INSTALL_INFO}"
+        pkgs_apt "${PKG}"
+    done
+    PKGS_PROD_STATUS=-100
+}
+
+packages_run() {
+    pkgs_list_installed
+    pkgs_upgrade
+    pkgs_base
+    pkgs_cli
+    pkgs_tools
+    pkgs_web
+    pkgs_av
+    pkgs_prod
+    pkgs_autoremove
+    pkgs_autopurge
+}
